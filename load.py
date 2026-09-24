@@ -39,9 +39,7 @@ def load_parquet_files():
         # we have 12 months and need to combine all 12 into yellow_trips
         # we could have DuckDB do:
         #   CREATE TABLE yellow_trips AS
-        #   SELECT * FROM read_parquet('yellow_tripdata_2024-01.parquet');
-        # that would only give us January and then repeat it 11 times,
-        # so it's not efficient --> FOR LOOP!
+        #   SELECT * FROM read_parquet('yellow_tripdata_2024-01.parquet')
 
         # this is the common part of the links so we store it
         yellow_base_url = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-"
@@ -143,7 +141,7 @@ def load_parquet_files():
                     FROM read_parquet(?);
                 """, [url])
             logger.info(f"green_trips: loaded month {month_string}/2024")
-            
+
         # Count all Green taxi rows after loading
         n = con.execute(
             "SELECT COUNT(*) FROM green_trips"
